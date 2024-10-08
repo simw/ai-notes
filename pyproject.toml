@@ -1,0 +1,16 @@
+[project]
+name = "aibook"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+  {name = "Simon Wicks", email = "simw@users.noreply.github.com"}
+]
+requires-python = ">=3.12"
+dependencies = [
+    "jupyter-book>=1.0.2",
+]
+
+[project.urls]
+Repository = "https://github.com/simw/aibook"
+
