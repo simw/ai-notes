@@ -1,5 +1,12 @@
 
 format: jb-book
 root: 0-intro
-chapters:
-- file: 1-overview
+parts:
+  - caption: Overview
+    chapters:
+    - file: 1-overview
+
+  - caption: Discriminative Modeling
+    chapters:
+    - file: discriminative-1
+    - file: discriminative-2

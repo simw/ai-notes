@@ -4,31 +4,31 @@
 
 In a general problem, we want to make a decision based on some input data. We focus here on making a single, isolated decision using a static dataset. The data could be numbers, text, audio, pictures, video, some other form of data, or a mixture of these. To begin, we focus on the situation where the data can be split into input variables and target variables, and the new decision comes with new values of the input variables (a discriminative problem). While it is sometimes possible to combine modeling and decision making, more often we will separate the problem into two stages: first, modeling a probability distribution of variables given the data (the inference stage), and then making a decision based on the probability distribution (the decision stage). While the second stage may be very important, we will focus most of our time here on the first, modeling the probability distribution.
 
-## Simplifying the problem
+## From an Integral to a Maximization
 
 We begin by expressing the probability distribution as a sum (or integral) over all possible models and model parameterizations, weighted by our priors for the models and parameters. In practice, our prior will usually be zero except for one specific model, and the result is a sum (or integral) over the parameters (or 'weights') of that model. However, this sum or integral is usually too difficult to evaluate analytically, and too expensive to calculate numerically. Further, we may not even have a firm view on our prior. Hence, we usually assume that the likelihood of the input data given weights is very strongly peaked and that we can focus only on the maximum likelihood solution. Finding the maximum of the likelihood will be much easier to evaluate than the full integral.
 
-## Further analytical work
+## From Likelihood to Error Functions
 
 Even when pursuing a numerical solution of the maximum likelihood, further analytical work at this point can make the numerical work less expensive and more robust. When predicting continuous target variables from continuous inputs (a regression problem), assuming that the input data is iid and the target variable is a deterministic function of the inputs plus a Gaussian noise term independent of the input variable(s) transforms the calculation into minimizing the least squares error - irrespective of how the deterministic function has been constructed. In the discrete target variable case, when the target can be expressed as 1-of-K, then maximizing the likelihood can be simplified to minimizing the cross-entropy error.
 
-## Simple parameterization
+## Simple Parameterizations
 
 At this point, we have to decide how to parameterize the probability distribution on the target variables as a function of the input variables. Almost any functional form for the probability distribution can be approached with stochastic gradient descent to find the maximum likelihood (albeit with various degrees of numerical efficiency or success). But for simpler problems, very strong assumptions can be useful - either because those assumptions are valid for the problem at hand, or to develop intuition or produce intuitive results. In a regression problem, assuming a linear relationship between input and target variables (or a linear relationship after a basis transformation) leads to linear regression, where calculating the parameters becomes a matrix evaluation from the data, no numerical optimization needed. In the discrete target variable case, assuming a sigmoid form for the probability does not lead to a closed-form solution, but to a form that can be efficiently evaluated using an iterative approach. A wide range of models can be useful, especially for low-dimensional data.
 
-## Neural networks
+## Neural Network Parameterization
 
 For more complicated problems, we want to use a parameterization for the input-target variable relationship that is very general. There are many possible approximations to functions - eg Taylor expansion, Fourier series - but these often become unwieldy or inefficient when the input and / or target variables are very high dimensional. A parameterization that works in high (and low) dimensions is that of neural networks. These express output(s) as a sum over non-linear functions of the input(s), where the non-linear functions are weighted and shifted by the parameters of the model. While a single layer of these functions can in theory approximate any function to any desired precision (given enough parameters), multiple layers of functions (aka deep networks) are much more effective in many practical problems. These models can even be extended to infinite series of inputs by introducing recurrence, feeding back outputs from the model as inputs for the next evaluation.
 
 The key is not on what can theoretically be represented, but what can be fit through optimization (usually a variant of stochastic gradient descent) in practice, and how well a model generalizes beyond the given data. While these deep networks allow very general relationships between input and target variables, it is still the case that feature engineering, encoding the structure of the problem in the structure of the network and normalization steps can lead to improvements in the convergence properties of the optimization, even turning infeasible problems into feasible ones.
 
-## Generative modeling
+## Generative Modeling
 
 So far, we have focused on probability distributions of target variables given input variables, fitted using the maximum likelihood. We may also face decisions where there is no input-target variable split, or that we want to model the joint distribution of input and target variables (which can still be used for predicting target variables from inputs by conditioning on the input variables). While the maximum likelihood problem can again be expressed as one of gradient descent, the numerical solution may be infeasible without further analytical work or approximations. Similar to the discriminative case, simpler paramaterizations and approximations may be applicable to various problems, or help to develop intuition.
 
 One more general approach is to express the (joint) distribution either through a change of variables or as a sum or integral over other variables, known as a latent variable representation (as if there were input variables, but those input variables are not known). Simpler versions of these models (eg linear latent variables) can be attacked analytically, but fully non-linear latent variables are more involved. Some models do not have valid solutions for all values of the parameters, and hence stochastic gradient descent cannot navigate across this sea of values. Hence, other numerical approaches are needed to fit the parameters to data. Combining latent variables with neural networks allow for very general non-linear relationships. When the latent variables are lower dimensional than the overall problem, this can be seen as describing a lower-dimensional manifold in the higher dimensional space.
 
-## Decision making
+## Decision Making
 
 We have left the decision making to the end. As mentioned, some approaches directly incorporate the decision making into the modeling (by finding a discriminant function), but the more flexible approach is to do the decision making after inference. Often this is simple - take an expected value, or sample from the distribution - but more involved approaches can involve utility or other derived functions.
 
