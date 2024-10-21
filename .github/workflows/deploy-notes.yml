@@ -19,16 +19,19 @@ jobs:
     - name: Set up Python 3.12
       uses: actions/setup-python@v4
       with:
-        python-version: 3.12
+        python-version-file: ".python-version"
 
     - name: Install uv package manager
       uses: astral-sh/setup-uv@v3
       with:
-        version: "0.4.19"
+        version: "0.4.19" 
+
+    - name: Install the project
+      run: uv sync --all-extras --dev
 
     - name: Build the book
       run: |
-        jupyter-book build ai-notes 
+        uv run jupyter-book build ai-notes 
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
