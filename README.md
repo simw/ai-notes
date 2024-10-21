@@ -1,3 +1,1 @@
-# Single Decision Making
-
-
+# AI Notes

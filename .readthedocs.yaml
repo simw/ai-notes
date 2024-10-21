@@ -8,5 +8,5 @@ build:
     - asdf plugin add uv
     - asdf install uv latest
     - asdf global uv latest
-    - uv run jupyter-book build single-decision-making/
-    - mkdir -p _readthedocs && cp -r ./single-decision-making/_build/html _readthedocs/.
+    - uv run jupyter-book build ai-notes/
+    - mkdir -p _readthedocs && cp -r ./ai-notes/_build/html _readthedocs/.
