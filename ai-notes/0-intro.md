@@ -1,4 +1,4 @@
-# Artificial Intelligence
+# Notes on Artificial Intelligence
 
 ```{tableofcontents}
 ```
