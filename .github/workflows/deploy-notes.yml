@@ -1,4 +1,4 @@
-name: deploy-sdm
+name: deploy-notes
 
 on:
   push:
