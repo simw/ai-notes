@@ -1,16 +1,16 @@
 # From a Likelihood to Error Functions
 
+We are looking to find $w_{MDLE}$ that maximizes the function $P( \{ t_i \} \mid \{x_i \}, w )$. We could just choose a parameterization for $(P(t \mid x)), and then numerically maximize (using eg a version of gradient descent) the product of the probability for each data point. But some further analytical work will make the numerical calculation more efficient.
+
 ## Continuous Target Variable(s)
 
-We are looking to find $w_{MDLE}$ that maximizes the function $P( \{ t_i \} | \{x_i \}, w )$.
-
-If we assume that $t$ is continuous and given by a deterministic function of $x$ with additivie Gaussian noise. ie
+For the case where $t$ is continuous and given by a deterministic function of $x$ with additive Gaussian noise, the target variable $t$ can be expressed as:
 
 $$
 t = y(x, w) + \epsilon
 $$
 
-then
+and the probability distribution as
 
 $$
 P(t \mid x, w, \sigma^2) = N(t \mid y(x, w), \sigma^2)
@@ -28,7 +28,7 @@ $$
 N(t_n | y(x_n, w), \sigma^2) = \frac{1}{\sqrt{2 \pi \sigma^2}} \exp \left( - \frac{(t_n - y(x_n, w))^2}{2 \sigma^2} \right)
 $$
 
-Equivalent to maximizing the likelihood is minimizing the negative log likelihood. This becomes
+Instead of maximizing the likelihood, we transform the problem to the equivalent of minimizing the negative log likelihood, which is equal to
 
 $$
 \ln P({t_i} | {x_i}, w, \sigma^2) = \frac{N}{2} \ln(2\pi) + \frac{N}{2} \ln \sigma^2 + \frac{1}{2 \sigma^2} \sum_{n=1}^N \left( t_n - y(x_n, w)\right)^2
