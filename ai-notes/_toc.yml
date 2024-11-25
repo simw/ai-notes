@@ -6,7 +6,11 @@ parts:
     chapters:
     - file: 1-overview
 
-  - caption: Discriminative Modeling
+  - caption: Conditional Modeling
     chapters:
-    - file: discriminative-1
-    - file: discriminative-2
+    - file: conditional-1
+    - file: conditional-2
+
+  - caption: Generative Modeling
+    chapters:
+    - file: generative-1.md

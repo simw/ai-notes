@@ -70,10 +70,10 @@ $$
 
 where $P(M)$ is our prior on the model $M$, and the denominator is often expressed as $P(D) = \sum_M P(D \mid M) P(M)$.
 
-Rather than an abstract set of models $M$, we will usually set our prior to zero for most models, and only non-zero for a specific class of model, parameterized by $w$. For example, we may only want to consider models that have Gaussian noise around a mean, and ignore any other distributions. $w$ can be single dimensional (ie a scaler) or multidimensional (eg a vector). Assuming that $w$ is continuous (although $X$ and $T$ can still be discrete), the above can be rewritten as:
+Rather than an abstract set of models $M$, we will usually set our prior to zero for most models, and only non-zero for a specific class of model, parameterized by $w$. For example, we may only want to consider models that have Gaussian noise around a mean, and ignore any other distributions. $w$ can be single dimensional (ie a scaler) or multidimensional (eg a vector). While $w$ can be discrete in theory, we usually use parameters $w$ that are continuous (although $X$ and $T$ can still be discrete even with continuous $w$). Continuous parameters are often easier to deal with in an optimization - allowing for gradient descent moving across the $w$ landscape. Using a continuous $w$, the summations are replaced by integrals and the above can be rewritten as:
 
 $$
-P(t | x, D) = \frac{\int P(t \mid x, w) P(\{ x_i, t_i \} \mid w) P(w) dw}{\int P(\{x_i, t_i\} \mid w) P(w) dw}
+P(t \mid x, D) = \frac{\int P(t \mid x, w) P(\{ x_i, t_i \} \mid w) P(w) dw}{\int P(\{x_i, t_i\} \mid w) P(w) dw}
 $$
 
 The task then is to decide on the parameterization for $P(t | x, w)$, a prior $P(w)$ for the weights $w$, and to evaluate the integrals. 3 possible approaches to this are:
@@ -161,7 +161,7 @@ $$
 
 the maximum a posteriori values (the normalization factors cancel across the two integrals). Hence, the problem becomes:
 
-1. Choosing a suitable parameterization of the distribution $P( \{(x_i, t_i)\} | w)$ and the prior $P(w)
+1. Choosing a suitable parameterization of the distribution $P( \{(x_i, t_i)\} | w)$ and the prior $P(w)$
 2. Finding the maximum of $P( \{(x_i, t_i)\} | w) P(w)$ with respect to $w$
 3. Plugging $w_{MAP}$ back into the parameterization of $P(t | x, w)$. Since we have chosen to model $P( \{(x, t)\} | w)$, we use
 

@@ -16,6 +16,8 @@ $$
 P(t \mid x, w, \sigma^2) = N(t \mid y(x, w), \sigma^2)
 $$
 
+In this paramterization, any function $y(x, w)$ will lead to a normalized probability distribution. If the parameters $w$ are found in an optimization, no constraints are needed to be applied to $w$ in order to normalize.
+
 By assuming that the data points are iid, the likelihood becomes
 
 $$
@@ -68,7 +70,7 @@ $$
 
 This is the cross-entropy error function. By minimizing this function, we are maximizing the likelihood. Once again, we have made limited assumptions in deriving this error function.
 
-In this case, we have to pick a parameterization for $P(C_k \mid x_n, w)$ that satisfies $\sum_{k=1}^{K} P(C_k \mid x, w) = 1$. One approach to this is to use the soft-max function, thus allowing the parameterization to go over all the real numbers:
+In this case, we have to pick a parameterization for $P(C_k \mid x_n, w)$ that satisfies $\sum_{k=1}^{K} P(C_k \mid x, w) = 1$. If we directly model $P(C_k \mid x, w)$, then we need to make sure that this extra constraint is applied. An approach to this that allows for parameterizing a function without additional constraints is to use the soft-max function. This not only automatically satisfies the normalization constraint on $P$ (by dividing by the sum), but also allows $y_k$ to go over all the real numbers including negative numbers (by exponentiating). The soft-max function is:
 
 $$
 P(C_k \mid x, w) = \frac{\exp( y_k(x, w))}{\sum_j \exp( y_j(x, w))}
@@ -81,3 +83,27 @@ E(w) = - \sum_{n=1}^N \left( \sum_{k=1}^K t_{nk} y_{nk} - \ln \sum_j \exp(y_{nj}
 $$
 
 having shortened $y_k(x_n, w) = y_{nk}$, referred to as the 'logits'.
+
+An alternative to the soft-max parameterization could be:
+
+$$
+P(C_k \mid x, w) = \frac{ | y_k(x, w) |^2 }{\sum_j | y_j(x, w) |^2}
+$$
+
+which would allow $y_k(x, w)$ to range over all complex numbers.
+
+## Summary
+
+As a summary:
+
+1. We want to model the probability distribution $P(t \mid x, D)$, where $D$ is the data.
+
+2. We assume that the data dependence is taken by a model with a finite set of parameters $w$, and use Bayes rule to express $P(t \mid x, D)$ as a sum or (more usually) integral over $P(D \mid w)$, also known as the 'likelihood'.
+
+3. If the likelihood, $P(D \mid w)$ is sharply peaked in $w$-space relative to our prior, then we can ignore all values except $w_{ML}$, and hence look for $P(t \mid x, D) = P(t \mid x, w_{ML})$. The problem now is to use a specific parameterization to find $w_{ML}$ from $P(D \mid w)$.
+
+4. We often assume that the data is iid (independent and identically distributed), to express $P(D \mid w)$ as $\prod_i P(t_i \mid x_i, w)$. Two special cases of this are:
+
+    i. For a continuous target variable with additive Gaussian noise, maximizing the likelihood is equivalent to minimizing the squared error function $E(w) = \sum_{n=1}^N \left( t_n - y(x_n, w) \right)^2$.
+
+    ii. For a discrete target variable with 1-of-K encoding, maximizing the likelihood is equivalent to minimizing the cross-entropy negative log likelihood, $E(w) = - \sum_{n=1}^{N} \sum_{k=1}^K t_{nk} P(C_k \mid x_n, w)$.
